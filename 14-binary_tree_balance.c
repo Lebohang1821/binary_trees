@@ -2,13 +2,13 @@
 
 /**
  * binary_tree_balance - It measures balance factor of binary tree
- * @my_tree: Pointer to root node of my_tree to measure balance factor
+ * @_tree: Pointer to root node of my_tree to measure balance factor
  *
  * Return: If tree is NULL, return 0, else return balance factor
  */
-int binary_tree_balance(const binary_tree_t *my_tree)
+int binary_tree_balance(const binary_tree_t *_tree)
 {
-	if (my_tree)
+	if (_tree)
 		return (binary_tree_height(_tree->left) - binary_tree_height(_tree->right));
 
 	return (0);
