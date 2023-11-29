@@ -1,48 +1,122 @@
-/* 101-binary_tree_levelorder.c */
-
 #include "binary_trees.h"
-#include <stdio.h>
-#include <stdlib.h>
+
+levelorder_queue_t *create_node(binary_tree_t *node);
+void free_queue(levelorder_queue_t *head);
+void pint_push(binary_tree_t *node, levelorder_queue_t *head,
+		levelorder_queue_t **tail, void (*func)(int));
+void pop(levelorder_queue_t **head);
+void binary_tree_levelorder(const binary_tree_t *tree, void (*func)(int));
 
 /**
- * binary_tree_levelorder - Traverse a binary tree using level-order traversal
- * @tree: Pointer to the root node of the tree to traverse
- * @func: Pointer to a function to call for each node
+ * create_node - Creates a new levelorder_queue_t node.
+ * @node: A binary tree node for the new node to contain.
  *
- * Description: If tree or func is NULL, do nothing
+ * Return: If an error occurs, NULL.
+ *         Otherwise, the pointer to the new node.
+ */
+levelorder_queue_t *create_node(binary_tree_t *node)
+{
+	levelorder_queue_t *new;
+
+	new = malloc(sizeof(levelorder_queue_t));
+	if (new == NULL)
+		return (NULL);
+
+	new->node = node;
+	new->next = NULL;
+
+	return (new);
+}
+
+/**
+ * free_queue - Frees a levelorder_queue_t queue.
+ * @head: A pointer to the head of the queue.
+ */
+void free_queue(levelorder_queue_t *head)
+{
+	levelorder_queue_t *tmp;
+
+	while (head != NULL)
+	{
+		tmp = head->next;
+		free(head);
+		head = tmp;
+	}
+}
+
+/**
+ * pint_push - Runs a function on a given binary tree node and
+ *             pushes its children into a levelorder_queue_t queue.
+ * @node: The binary tree node to print and push.
+ * @head: A double pointer to the head of the queue.
+ * @tail: The double pointer to the tail of the queue.
+ * @func: The pointer to the function to call on @node.
+ *
+ * Description: Upon malloc failure, exits with a status code of 1.
+ */
+void pint_push(binary_tree_t *node, levelorder_queue_t *head,
+		levelorder_queue_t **tail, void (*func)(int))
+{
+	levelorder_queue_t *new;
+
+	func(node->n);
+	if (node->left != NULL)
+	{
+		new = create_node(node->left);
+		if (new == NULL)
+		{
+			free_queue(head);
+			exit(1);
+		}
+		(*tail)->next = new;
+		*tail = new;
+	}
+	if (node->right != NULL)
+	{
+		new = create_node(node->right);
+		if (new == NULL)
+		{
+			free_queue(head);
+			exit(1);
+		}
+		(*tail)->next = new;
+		*tail = new;
+	}
+}
+
+/**
+ * pop - Pops the head of the levelorder_queue_t queue.
+ * @head: The double pointer to the head of the queue.
+ */
+void pop(levelorder_queue_t **head)
+{
+	levelorder_queue_t *tmps;
+
+	tmps = (*head)->next;
+	free(*head);
+	*head = tmps;
+}
+
+/**
+ * binary_tree_levelorder - Traverses the binary tree using
+ *                          level-order traversal.
+ * @tree: The pointer to the root node of the tree to traverse.
+ * @func: The pointer to a function to call for each node.
  */
 void binary_tree_levelorder(const binary_tree_t *tree, void (*func)(int))
 {
-    if (tree == NULL || func == NULL)
-        return;
+	levelorder_queue_t *head, *tails;
 
-    /* Create a queue for level-order traversal */
-    binary_tree_t **queue = malloc(sizeof(binary_tree_t *) * binary_tree_size(tree));
-    size_t front = 0, rear = 0;
+	if (tree == NULL || func == NULL)
+		return;
 
-    if (queue == NULL)
-        return;
+	head = tails = create_node((binary_tree_t *)tree);
+	if (head == NULL)
+		return;
 
-    /* Enqueue the root */
-    queue[rear++] = (binary_tree_t *)tree;
-
-    /* Continue traversal until the queue is empty */
-    while (front < rear)
-    {
-        /* Dequeue a node and perform the specified function */
-        binary_tree_t *current = queue[front++];
-        func(current->n);
-
-        /* Enqueue the left child if exists */
-        if (current->left != NULL)
-            queue[rear++] = current->left;
-
-        /* Enqueue the right child if exists */
-        if (current->right != NULL)
-            queue[rear++] = current->right;
-    }
-
-    /* Free the queue */
-    free(queue);
+	while (head != NULL)
+	{
+		pint_push(head->node, head, &tails, func);
+		pop(&head);
+	}
 }
-
