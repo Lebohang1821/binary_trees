@@ -73,4 +73,3 @@ int is_perfect_recursive(const binary_tree_t *tree, size_t height, size_t *level
     return (is_perfect_recursive(tree->left, height, level) &&
             is_perfect_recursive(tree->right, height, level));
 }
-
