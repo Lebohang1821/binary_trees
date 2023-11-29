@@ -66,9 +66,7 @@ void free_queue(levelorder_queue_t *head)
  */
 void push(binary_tree_t *node, levelorder_queue_t **head, levelorder_queue_t **tail)
 {
-    levelorder_queue_t *new;
-
-    new = create_node(node);
+    levelorder_queue_t *new = create_node(node);
     if (new == NULL)
     {
         free_queue(*head);
@@ -87,9 +85,7 @@ void push(binary_tree_t *node, levelorder_queue_t **head, levelorder_queue_t **t
  */
 void pop(levelorder_queue_t **head)
 {
-    levelorder_queue_t *tmp;
-
-    tmp = (*head)->next;
+    levelorder_queue_t *tmp = (*head)->next;
     free(*head);
     *head = tmp;
 }
