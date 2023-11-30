@@ -22,7 +22,7 @@ return (1);
 }
 
 /**
-* binary_tree_is_bst - Checks if the binary tree is on valid binary search tree.
+* binary_tree_is_bst - Check if the binary tree is on valid binary search tree.
 * @tree: The pointer to the root node of the tree to check.
 *
 * Return: 1 if tree is the valid BST, and 0 otherwise
