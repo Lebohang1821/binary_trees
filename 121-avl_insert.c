@@ -73,7 +73,7 @@ if (bfactors > 1 && (*tree)->left->n > value)
 *tree = binary_tree_rotate_right(*tree);
 else if (bfactors < -1 && (*tree)->right->n < value)
 *tree = binary_tree_rotate_left(*tree);
-else if (bfactor > 1 && (*tree)->left->n < value)
+else if (bfactors > 1 && (*tree)->left->n < value)
 {
 (*tree)->left = binary_tree_rotate_left((*tree)->left);
 *tree = binary_tree_rotate_right(*tree);
