@@ -27,7 +27,7 @@ return (0);
 
 /**
 * balance - Measures the balance factor of a binary tree.
-* @tree: The pointer to the root node of the tree to measure the balance factor.
+* @tree: The pointer to root node of the tree to measure the balance factor.
 *
 * Return: If tree NULL, return 0, else return balance factor.
 */
